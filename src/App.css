@@ -1,11 +1,11 @@
 .App {
   text-align: center;
-  background-color: rgb(78, 78, 78);
+  background-color: rgb(255, 222, 222);
   min-height: 100vh;
   width: 100vw;
 }
 .Bg001 {
-  background-color: rgb(27, 27, 27);
+  background-color: rgb(240, 240, 240);
   min-height: 100vh;
   max-width: 1500px;
   margin: 0 auto;
@@ -15,7 +15,7 @@
   height: 25px;
 }
 .Title001{
-  color: rgb(224, 48, 4);
+  color: rgb(233, 66, 24);
   font-size: 20px;
   font-weight: 600;
   margin-top: 17px;
@@ -33,15 +33,26 @@
 .Ranking_buttons{
   border-radius: 25px;
   text-align: left;
-  padding-top: 20px;
-  padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 40px;
+  background-color: rgb(255, 222, 222);
+  border-color: rgb(255, 222, 222);
+  color: rgb(233, 66, 24)
+}
+.Ranking_buttons:hover{
+  background-color: rgb(233, 66, 24);
+  border-color: rgb(233, 66, 24);
+  color: rgb(255, 222, 222);
+}
+.Ranking_buttons:focus{
+  background-color: rgb(233, 66, 24) !important;
+  border-color: rgb(233, 66, 24) !important;
+  color: rgb(255, 222, 222) !important;
 }
 .Details{
   width: 1000px;
   height: 750px;
-  background-color: rgb(68, 68, 68);
+  background-color: rgb(255, 222, 222);
   border-radius: 25px;
 }
 .Details_title{
@@ -49,14 +60,15 @@
   top: 25px;
   left: 35px;
   text-align: left;
-  color: cyan
+  color: rgb(233, 66, 24);
+  font-weight: 575;
 }
 .Details_title:hover{
   text-decoration: underline;
   cursor: pointer;
 }
 .Details_basic{
-  color: aquamarine;
+  color: rgb(233, 66, 24);
   position: relative;
   top: 50px;
   text-align: left;
@@ -69,7 +81,7 @@
 }
 .Line_chart{
   width: 500px;
-  background-color: rgb(180, 255, 245);
+  background-color: rgb(240, 240, 240);
   border-radius: 10px;
   padding: 20px;
 }
@@ -77,4 +89,27 @@
   display: flex;
   justify-content: space-evenly;
   margin-top: 30vh !important;
+}
+.Dd_btn{
+  background-color: rgb(255, 222, 222);
+  border-color: rgb(255, 222, 222);
+  width: 250px;
+  color: rgb(233, 66, 24);
+}
+.Dd_btn:hover{
+  background-color: rgb(233, 66, 24);
+  border-color: rgb(233, 66, 24);
+  color: rgb(255, 222, 222);
+}
+.Dd_btn:focus{
+  background-color: rgb(233, 66, 24) !important;
+  border-color: rgb(233, 66, 24) !important;
+  color: rgb(255, 222, 222) !important;
+}
+.Dd_options{
+  color: rgb(233, 66, 24);
+}
+.Dd_options:hover{
+  background-color: rgb(233, 66, 24);
+  color: rgb(255, 222, 222);
 }
