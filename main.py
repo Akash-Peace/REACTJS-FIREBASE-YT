@@ -1,5 +1,3 @@
-import time
-
 from google.cloud import firestore
 from bs4 import BeautifulSoup
 import os, csv, requests, re
@@ -8,7 +6,10 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "paid-promoters-recommender-fireb
 
 db = firestore.Client()
 
-file = open('cat.csv')
+regions = ["tamil", "malayalam", "telugu", "hindi"]
+region = int(input("REGIONS\n1. Tamil\n2. Malayalam\n3. Telugu\n4. Hindi\nEnter a number to select a region: "))
+
+file = open(f'{regions[region-1]}.csv')
 csv_reader = csv.reader(file)
 
 data = {}
@@ -40,6 +41,7 @@ for i in csv_reader:
             temp_data_unapproved.append(i[0])
             temp_data_contact.append(i[0])
         temp_data.append(i[0])
-db.collection('paid-promoters').document("unapproved").set(data_unapproved)
-db.collection('paid-promoters').document("id").set(data)
-db.collection('paid-promoters').document("contact").set(data_contact)
+#db.collection({regions[region-1]}).document("unapproved").set(data_unapproved)
+#db.collection({regions[region-1]}).document("id").set(data)
+#db.collection({regions[region-1]}).document("contact").set(data_contact)
+#db.collection("zone").document("regions").set({"lang": regions})
