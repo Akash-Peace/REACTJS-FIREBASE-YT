@@ -70,8 +70,11 @@
 .Details_basic{
   color: rgb(233, 66, 24);
   position: relative;
+  display: flex;
+  max-width: 930px;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   top: 50px;
-  text-align: left;
   left: 35px
 }
 .Utube_vdo{
@@ -88,7 +91,7 @@
 .Fillups{
   display: flex;
   justify-content: space-evenly;
-  margin-top: 30vh !important;
+  margin-top: 8vh !important;
 }
 .Dd_btn{
   background-color: rgb(255, 222, 222);
@@ -112,4 +115,13 @@
 .Dd_options:hover{
   background-color: rgb(233, 66, 24);
   color: rgb(255, 222, 222);
+}
+.Info_tag{
+  background-color: white;
+  border-radius: 10px;
+  padding: 40px;
+  width: 300px;
+  height: 130px;
+  text-align: center;
+  margin-bottom: 20px;
 }

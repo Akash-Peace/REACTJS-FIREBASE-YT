@@ -18,21 +18,50 @@ function App() {
   const [region  , Setregion] = useState("tamil");
   const [region_options, Setregion_options] = useState([]);
   const [ad_category, Setad_category] = useState([]);
-  const youtube_api_keys = [process.env.REACT_APP_YOUTUBE_API_KEY_0,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_1,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_2,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_3,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_4,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_5,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_6,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_7,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_8,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_9,
-                            process.env.REACT_APP_YOUTUBE_API_KEY_10]
+  const youtube_api_keys_tamil = [process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_0,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_1,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_2,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_3,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_4,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_5,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_6,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_7,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_8,
+                            process.env.REACT_APP_YOUTUBE_API_KEY_TAMIL_9];
+  const youtube_api_keys_hindi = [process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_0,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_1,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_2,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_3,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_4,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_5,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_6,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_7,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_8,
+                              process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_9];
+  const youtube_api_keys_malayalam = [process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_0,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_1,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_2,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_3,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_4,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_5,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_6,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_7,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_8,
+                                process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_9];
+  const youtube_api_keys_telugu = [process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_0,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_1,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_2,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_3,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_4,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_5,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_6,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_7,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_8,
+                                  process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_9];
   
   useEffect(() => {
     fetch_pp_id0();
-  }, [])
+  }, [region])
 
   const fetch_pp_id0 = async() => {
     db.collection("zone").doc("regions").get()
@@ -93,12 +122,12 @@ function App() {
 
   let api_count = 0
   const fetch_pp_id3 = async(b) => {
-    if(api_count === 10){
+    if(api_count === eval(`youtube_api_keys_${region}`).length-1){
       api_count = 0
     } else {
       api_count = api_count+1
     }
-    let youtube_api_key = youtube_api_keys[api_count]
+    let youtube_api_key = eval(`youtube_api_keys_${region}`)[api_count]
     var d = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${b}&key=${youtube_api_key}`)
     .then((res) => res.json())
     .then((json) => {
@@ -235,11 +264,11 @@ function App() {
           </Dropdown>
           <Dropdown style={{marginTop: "15px", marginLeft: "auto", marginRight: "-230px"}}>
             <Dropdown.Toggle variant="danger" className='Dd_btn' id="dropdown-basic">
-              Region: {region}
+              Region: {region.charAt(0).toUpperCase() + region.slice(1)}
             </Dropdown.Toggle>
             <Dropdown.Menu style={{backgroundColor: "rgb(255, 222, 222)"}}>
               {
-                region_options.map((option, id) => (<Dropdown.Item className='Dd_options' key={id} onClick={(e) => {Setregion(option)}}>{option}</Dropdown.Item>))
+                region_options.map((option, id) => (<Dropdown.Item className='Dd_options' key={id} onClick={(e) => {Setregion(option)}}>{option.charAt(0).toUpperCase() + option.slice(1)}</Dropdown.Item>))
               }
             </Dropdown.Menu>
           </Dropdown>
@@ -270,18 +299,18 @@ function App() {
                 {channel_details && <>
                 <h3 className="Details_title" onClick={() => window.open(`https://www.youtube.com/channel/${channel_details[0]}`)}>{channel_details[1]} {!category_details_unapproved.includes(channel_details[0]) && <>&#10004;</>}</h3>
                 <div className="Details_basic">
-                  <h5><span style={{color: "black"}}>Followers:</span> {
+                  <h5 className='Info_tag'><span style={{color: "black"}}>Followers<br/></span> {
                     channel_details[2] === "" ? "Private" : numWords(channel_details[2])
                   }</h5>
-                  <h5><span style={{color: "black"}}>Total views:</span> {numWords(channel_details[3])}</h5>
-                  <h5><span style={{color: "black"}}>Videos posted:</span> {numWords(channel_details[4])}</h5>
-                  <h5><span style={{color: "black"}}>Latest video uploaded:</span> {channel_details[6].slice(8, 10)+'/'+channel_details[6].slice(5, 7)+'/'+channel_details[6].slice(2, 4)}</h5>
+                  <h5 className='Info_tag'><span style={{color: "black"}}>Total views<br/></span> {numWords(channel_details[3])}</h5>
+                  <h5 className='Info_tag'><span style={{color: "black"}}>Videos posted<br/></span> {numWords(channel_details[4])}</h5>
+                  <h5 className='Info_tag'><span style={{color: "black"}}>Last video posted<br/></span> {channel_details[6].slice(8, 10)+'/'+channel_details[6].slice(5, 7)+'/'+channel_details[6].slice(2, 4)}</h5>
                   {
                     channel_details_contact === "contact_unavailable" ?
-                      <h5 style={{cursor: "pointer"}} onClick={() => window.open(`https://www.youtube.com/channel/${channel_details[0]}/about`)}><span style={{color: "black"}}>Contact:</span> @About page</h5> :
-                      <h5><span style={{color: "black"}}>Contact:</span> {channel_details_contact}</h5> 
+                      <h5 className='Info_tag' style={{cursor: "pointer"}} onClick={() => window.open(`https://www.youtube.com/channel/${channel_details[0]}/about`)}><span style={{color: "black"}}>Contact<br/></span> @About page</h5> :
+                      <h5 className='Info_tag'><span style={{color: "black"}}>Contact<br/></span> {String(channel_details_contact).split("@")[0]}<br/>@{String(channel_details_contact).split("@")[1]}</h5> 
                   }
-                  <h5><span style={{color: "black"}}>Approx. view rate:</span> {numWords(channel_details[17])}</h5>
+                  <h5 className='Info_tag'><span style={{color: "black"}}>Approx. view rate<br/></span> {numWords(channel_details[17])}</h5>
                 </div>
                 <div className="Fillups">
                 <div className='Line_chart'><Line data={line_chart_data()}/></div>
@@ -290,6 +319,8 @@ function App() {
                 </>}
               </div>
             </div>}
+            <br/>
+            <br/>
           </div>
       </div>
     </div>
