@@ -13,8 +13,9 @@ function App() {
   const [category_details_contact, Setcategory_details_contact] = useState([]);
   const [channel_details_contact, Setchannel_details_contact] = useState();
   const [category_details_unapproved, Setcategory_details_unapproved] = useState([]);
-  const [category_input, Setcategory_input] = useState("Advertisement category");
+  const [category_input, Setcategory_input] = useState("Ad category");
   const [category_input_result, Setcategory_input_result] = useState(10);
+  const [sort, Setsort] = useState("View rate");
   const [region, Setregion] = useState("tamil");
   const [cid, Setcid] = useState("");
   const [show, setShow] = useState(false);
@@ -40,16 +41,16 @@ function App() {
   process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_7,
   process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_8,
   process.env.REACT_APP_YOUTUBE_API_KEY_HINDI_9];
-  // const youtube_api_keys_malayalam = [process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_0,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_1,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_2,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_3,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_4,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_5,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_6,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_7,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_8,
-  //                               process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_9];
+  const youtube_api_keys_malayalam = [process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_0,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_1,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_2,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_3,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_4,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_5,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_6,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_7,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_8,
+  process.env.REACT_APP_YOUTUBE_API_KEY_MALAYALAM_9];
   const youtube_api_keys_telugu = [process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_0,
   process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_1,
   process.env.REACT_APP_YOUTUBE_API_KEY_TELUGU_2,
@@ -66,7 +67,7 @@ function App() {
     fetch_pp_details(category_input);
     fetch_pp_contact(category_input);
     fetch_pp_unapproved(category_input)
-  }, [region, category_input])
+  }, [region, category_input, sort])
 
   const fetch_pp_id0 = async () => {
     db.collection("zone").doc("regions").get()
@@ -169,7 +170,11 @@ function App() {
       .then((doc) => {
         let temp = [];
         (doc.get(onspot)).map((i) => { temp.push(i.split(" *+ ")) })
-        temp = (temp.sort(function (a, b) { return a[17] - b[17] })).reverse()
+        if (sort === "View rate"){
+          temp = (temp.sort(function (a, b) { return a[17] - b[17] })).reverse()
+        } else {
+          temp = (temp.sort(function (a, b) { return a[2] - b[2] })).reverse()
+        }
         Setcategory_details(temp)
         Setchannel_details(temp[0])
         is_contact_available(temp[0][0])
@@ -269,7 +274,7 @@ function App() {
         <div className='Header001'>
           <img className='Logo001' src="https://lh3.googleusercontent.com/ogw/ADea4I58SlVwNZskpULql2McX5H7oxMEmRKs2PJzoV1s=s83-c-mo" alt="PPR Logo" />
           <h1 className='Title001'>Paid Promoters Recommender</h1>
-          <Dropdown style={{ marginTop: "15px", marginLeft: "auto", marginRight: "-230px" }}>
+          <Dropdown style={{ marginTop: "15px", marginLeft: "auto", marginRight: "-150px" }}>
             <Dropdown.Toggle variant="danger" className='Dd_btn' id="dropdown-basic">
               Max Result: {category_input_result}
             </Dropdown.Toggle>
@@ -279,7 +284,17 @@ function App() {
               }
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown style={{ marginTop: "15px", marginLeft: "auto", marginRight: "-230px" }}>
+          <Dropdown style={{ marginTop: "15px", marginLeft: "auto", marginRight: "-150px" }}>
+            <Dropdown.Toggle variant="danger" className='Dd_btn' id="dropdown-basic">
+              Sort by: {sort}
+            </Dropdown.Toggle>
+            <Dropdown.Menu style={{ backgroundColor: "rgb(255, 222, 222)" }}>
+              {
+                ["Followers", "View rate"].map((option, id) => (<Dropdown.Item className='Dd_options' key={id} onClick={(e) => { Setsort(option) }}>{option}</Dropdown.Item>))
+              }
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown style={{ marginTop: "15px", marginLeft: "auto", marginRight: "-150px" }}>
             <Dropdown.Toggle variant="danger" className='Dd_btn' id="dropdown-basic">
               Region: {region.charAt(0).toUpperCase() + region.slice(1)}
             </Dropdown.Toggle>
@@ -301,7 +316,7 @@ function App() {
           </Dropdown>
         </div>
         <div>
-          {category_input === "Advertisement category" ? <>
+          {category_input === "Ad category" ? <>
             <h1 style={{ color: "rgb(233, 66, 24)", marginTop: "40vh" }}>Choose your region & ad category</h1>
           </> : <div className="Ranking">
             <ButtonGroup vertical>
@@ -335,7 +350,7 @@ function App() {
           </div>}
           <br />
           <br />
-          {category_input !== "Advertisement category" ?
+          {category_input !== "Ad category" ?
             <div className='Footer'>
               <h5 className="Register" onClick={() => setShow(true)}>
                 Register my channel

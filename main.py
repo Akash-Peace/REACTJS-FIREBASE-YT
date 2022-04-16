@@ -51,7 +51,7 @@ def create_dataset():
                 stemmer = PorterStemmer()
                 text = "".join([stemmer.stem(word) for word in text])
                 common_words = ["subscribe", "share", "like", "follow", "query", "sponsor", "sponsorship", "dear",
-                                "friend", "tamil", "hindi", "telugu", "chennai", "about", "love", "tamilnadu", "nadu",
+                                "friend", "tamil", "malayalam", "hindi", "telugu", "chennai", "about", "love", "tamilnadu", "nadu",
                                 "supporting", "enquiry", "enquiries", "inquiry", "inqueries", "hi", "hello", "videos",
                                 "video", "mail", "email", "gmail", "advertisement", "ad", "ads", "promotion",
                                 "business", "copyright", "disclaimer", "welcome", "youtube", "channel", "please",
@@ -120,8 +120,8 @@ def create_dataset():
     plt.show()
 
 def update_region():
-    regions = ["tamil", "telugu", "hindi"]
-    region = int(input("REGIONS\n1. Tamil\n2. Telugu\n3. Hindi\nEnter a number to select a region: "))
+    regions = ["tamil", "telugu", "hindi", "malayalam"]
+    region = int(input("REGIONS\n1. Tamil\n2. Telugu\n3. Hindi\n4. Malayalam\nEnter a number to select a region: "))
 
     file = open(f'{regions[region - 1]}.csv')
     csv_reader = csv.reader(file)
@@ -167,10 +167,10 @@ def add_new_id():
     file = open(f'new_entry.csv')
     csv_reader = csv.reader(file)
 
-    combined_csv = pd.concat([pd.read_csv(f) for f in ["tamil.csv", "telugu.csv", "hindi.csv"]])
+    combined_csv = pd.concat([pd.read_csv(f) for f in ["tamil.csv", "telugu.csv", "hindi.csv", "malayalam.csv"]])
     combined_csv.to_csv("combined_region.csv", index=False, encoding='utf-8-sig')
     combined_csv_reader = [o[0] if len(o)!=0 else " " for o in csv.reader(open("combined_region.csv"))]
-    lang_dict = {"ta": "tamil", "te": "telugu", "hi": "hindi"}
+    lang_dict = {"ta": "tamil", "te": "telugu", "hi": "hindi", "ml": "malayalam"}
     already = 0
 
     for i in csv_reader:
@@ -188,7 +188,7 @@ def add_new_id():
         stemmer = PorterStemmer()
         text = "".join([stemmer.stem(word) for word in text])
         common_words = ["subscribe", "share", "like", "follow", "query", "sponsor", "sponsorship", "dear",
-                        "friend", "tamil", "hindi", "telugu", "chennai", "about", "love", "tamilnadu", "nadu",
+                        "friend", "tamil", "hindi", "malayalam", "telugu", "chennai", "about", "love", "tamilnadu", "nadu",
                         "supporting", "enquiry", "enquiries", "inquiry", "inqueries", "hi", "hello", "videos",
                         "video", "mail", "email", "gmail", "advertisement", "ad", "ads", "promotion",
                         "business", "copyright", "disclaimer", "welcome", "youtube", "channel", "please",
@@ -214,22 +214,37 @@ def add_new_id():
         category = [k for k, v in mapping.items() if v == predicted_category[0]]
 
         region = 'unknown'
-        for j in ['tamil', 'telugu', "hindi"]:
+        for j in ['tamil', 'telugu', "hindi", "malayalam"]:
             for k in text.split():
-                if j in k:
+                if j in k.lower():
                     region = j
         if region == 'unknown':
             for j in tt.split():
                 lang = str(translator.detect(j)).split()[0][-3:-1]
-                if lang in ["ta", "te", "hi"]:
+                if lang in ["ta", "te", "hi", "ml"]:
                     region = lang_dict[lang]
         if region == 'unknown':
             r = requests.get(f"https://www.googleapis.com/youtube/v3/search?key=AIzaSyBB8-ie5_GgpC3bejsBz35PV-mvAwNjdmg&channelId={i[0]}&part=id&order=date&maxResults=1")
             vid = r.json()['items'][0]['id']['videoId']
             r = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={vid}&key=AIzaSyBB8-ie5_GgpC3bejsBz35PV-mvAwNjdmg')
-            lang = r.json()['items'][0]["snippet"]['defaultAudioLanguage']
-            if lang in ['ta', 'te', 'hi']:
-                region = lang_dict[lang]
+            try:
+                lang = r.json()['items'][0]["snippet"]['defaultAudioLanguage']
+                if lang in ['ta', 'te', 'hi', 'ml']:
+                    region = lang_dict[lang]
+                else:
+                    raise Exception()
+            except:
+                title_temp = r.json()['items'][0]["snippet"]['title']
+                description_temp = r.json()['items'][0]["snippet"]['description']
+                for j2 in ['tamil', 'telugu', "hindi", "malayalam"]:
+                    for k2 in (title_temp + description_temp).split():
+                        if j2 in k2.lower():
+                            region = j2
+                if region == 'unknown':
+                    for j2 in (title_temp + description_temp).split():
+                        lang = str(translator.detect(j2)).split()[0][-3:-1]
+                        if lang in ["ta", "te", "hi", "ml"]:
+                            region = lang_dict[lang]
         if region != 'unknown':
             if already == 0:
                 file = open(f'{region}.csv')
@@ -247,7 +262,8 @@ def add_new_id():
 
 def new_entry_cloud():
     entry = db.collection("zone").document("new_entry").get({'id'}).to_dict()
-    entry = list(set(entry['id'].split(' / ')))[1:]
+    entry = list(set(entry['id'].split(' / ')))
+    entry.remove('start')
 
     with open(f'new_entry.csv', 'w') as ff:
         writer = csv.writer(ff)

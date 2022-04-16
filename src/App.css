@@ -96,7 +96,7 @@
 .Dd_btn{
   background-color: rgb(255, 222, 222);
   border-color: rgb(255, 222, 222);
-  width: 250px;
+  width: 200px;
   color: rgb(233, 66, 24);
 }
 .Dd_btn:hover{
