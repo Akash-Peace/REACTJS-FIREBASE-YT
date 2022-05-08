@@ -1,0 +1,27 @@
+                    precision    recall  f1-score   support
+
+          Business       0.71      0.36      0.48        14
+Cine Entertainment       0.75      0.75      0.75        12
+       Cine Review       0.31      0.71      0.43         7
+           Cooking       0.75      1.00      0.86        12
+    Cryptocurrency       0.78      0.88      0.82         8
+             Dance       0.45      0.71      0.56         7
+         Education       1.00      0.27      0.42        15
+     Entertainment       0.80      0.44      0.57         9
+  Fashion & Beauty       0.83      0.56      0.67         9
+           Fitness       1.00      0.71      0.83         7
+       Food Review       0.56      0.71      0.63         7
+            Gaming       0.77      1.00      0.87        10
+             Memes       0.79      0.85      0.81        13
+             Music       0.62      0.80      0.70        10
+         Reactions       1.00      0.60      0.75        10
+      Share Market       1.00      0.67      0.80         9
+      Spirituality       0.43      0.50      0.46         6
+            Sports       0.57      0.40      0.47        10
+    Tech Education       0.33      0.70      0.45        10
+       Tech Review       0.82      0.75      0.78        12
+            Travel       0.86      0.75      0.80         8
+
+          accuracy                           0.66       205
+         macro avg       0.72      0.67      0.66       205
+      weighted avg       0.74      0.66      0.66       205
