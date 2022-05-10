@@ -224,9 +224,9 @@ def add_new_id():
                 if lang in ["ta", "te", "hi", "ml"]:
                     region = lang_dict[lang]
         if region == 'unknown':
-            r = requests.get(f"https://www.googleapis.com/youtube/v3/search?key=AIzaSyBB8-ie5_GgpC3bejsBz35PV-mvAwNjdmg&channelId={i[0]}&part=id&order=date&maxResults=1")
+            r = requests.get(f"https://www.googleapis.com/youtube/v3/search?key={apikey}&channelId={i[0]}&part=id&order=date&maxResults=1")
             vid = r.json()['items'][0]['id']['videoId']
-            r = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={vid}&key=AIzaSyBB8-ie5_GgpC3bejsBz35PV-mvAwNjdmg')
+            r = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={vid}&key={apikey}')
             try:
                 lang = r.json()['items'][0]["snippet"]['defaultAudioLanguage']
                 if lang in ['ta', 'te', 'hi', 'ml']:
